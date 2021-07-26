@@ -9,6 +9,7 @@
 
 extern void processPPM ();
 extern void startPPM ();
+extern void initPPM ();
 
 #ifdef __cplusplus
 }
