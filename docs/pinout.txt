@@ -1,0 +1,23 @@
+#define OLED_SCL PC5
+#define OLED_SDA PC4
+
+#define DEBUG_OUT PB2
+#define PPM_OUT   PD2
+#define TX_POWER  PD3
+#define BIND      PD4
+
+#define JOYSTICK0 A0
+#define JOYSTICK1 A1
+
+#define BUTTON1   PB1
+#define BUTTON2   PB0
+
+#define BIND_ON   0
+#define BIND_OFF  1
+
+#define POWER_ON  1
+#define POWER_OFF 0
+
+#define MARK      0
+#define SPACE     1
+

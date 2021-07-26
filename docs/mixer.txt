@@ -1,0 +1,154 @@
+4 channel TX
+============
+
+Mixing data:
+     _ _ _ _ _ _ _ _
+    [_ _ _ _|_ _ _ _]   channels
+        ^       ^
+        |       |
+        |       '------ output channel (0x0f = mix disabled)
+        '-------------- input channel
+                            channels 12-15 reserved for joysticks
+                            channel 9 reserved for -1024
+                            channel 10 reserved for 0
+                            channel 11 reserved for 1024
+     _ _ _ _ _ _ _ _
+    [_ _|_|_ _ _ _ _]
+         ^     ^
+         |     |
+         |     '------- scaling, numbers 0-100 in increments of 4 (shif left by 2 bits)
+         |                  value = scaling << 2
+         |                    108 = take value from flight mode variable 1
+         |                    112 = take value from flight mode variable 2
+         |                    116 = take value from flight mode variable 3
+         |                    120 = take value from flight mode variable 4
+         |
+         '------------- reverse input direction
+     _ _ _ _ _ _ _ _
+    [_ _ _|_ _ _ _ _]
+       ^       ^
+       |       |
+       |       '------- expo, numbers 0-100 in increments of 4 (shif left by 2 bits)
+       |                    value = expo << 2
+       |                      108 = take value from flight mode variable 1
+       |                      112 = take value from flight mode variable 2
+       |                      116 = take value from flight mode variable 3
+       |                      120 = take value from flight mode variable 4
+       |
+       '--------------- conditional
+                            000=no condition,
+                            100=no condition (can be used for toggle switch),
+                            001=active when switch A up,
+                            010=active when switch A down,
+                            011=active when switch A middle,
+                            101=active when switch B up,
+                            110=active when switch B down,
+                            111=active when switch B middle
+                            
+Flight mode conditions:
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+            .           > mode name - 4*4 = 16bytes 
+     _ _ _ _._ _ _ _   |
+    [_ _ _ _ _ _ _ _]  /
+     _ _ _ _ _ _ _ _
+    [_ _ _ _|_ _ _ _]   mode0 & mode 1 conditions
+    [_ _ _ _|_ _ _ _]   mode2 & mode 3 conditions
+                            000=no condition,
+                            100=no condition (can be used for toggle switch),
+                            001=active when switch A up,
+                            010=active when switch A down,
+                            011=active when switch A middle,
+                            101=active when switch B up,
+                            110=active when switch B down,
+                            111=active when switch B middle    
+
+Flight mode variable:
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]   mode0 value +/- 100
+    [_ _ _ _ _ _ _ _]   mode1 value +/- 100
+    [_ _ _ _ _ _ _ _]   mode2 value +/- 100
+    [_ _ _ _ _ _ _ _]   mode3 value +/- 100
+
+
+Model data:
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+            .          |
+            .           > name - 10 bytes 
+     _ _ _ _._ _ _ _   |
+    [_ _ _ _ _ _ _ _]  /
+    
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+    [_ _ _ _ _ _ _ _]   > trim data for joystick 4 bytes
+    [_ _ _ _ _ _ _ _]  |  values are +511/-512 but divided by 4
+    [_ _ _ _ _ _ _ _]  /  to get +127/-128
+    
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+    [_ _ _ _ _ _ _ _]   > input scaling
+    [_ _ _ _ _ _ _ _]  |  values are +511/-512 but divided by 4
+    [_ _ _ _ _ _ _ _]  /  to get +127/-128
+
+     _ _ _ _ _ _ _ _
+    [_ _|_|_|_|_|_|_]  - extended servo range
+
+     _ _ _ _ _ _ _ _
+    [_ _ _ _|_ _ _ _]  \
+    [_ _ _ _|_ _ _ _]   > output channel map 3 bytes
+    [_ _ _ _|_ _ _ _]  /
+
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]   > output endpoint adjustment 12 bytes
+    [_ _ _ _ _ _ _ _]  |  values are +255/-256 but divided by 2
+    [_ _ _ _ _ _ _ _]  |  to get +127/-128
+    [_ _ _ _ _ _ _ _]  /
+
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]  \
+            .           > mode names 4*4 bytes
+     _ _ _ _._ _ _ _   |
+    [_ _ _ _ _ _ _ _]  /
+     _ _ _ _ _ _ _ _
+    [_ _ _ _|_ _ _ _]   \ flight mode conditions
+    [_ _ _ _|_ _ _ _]   /
+    
+     _ _ _ _ _ _ _ _
+    [_ _ _ _ _ _ _ _]   \
+    [_ _ _ _ _ _ _ _]   |
+    [_ _ _ _ _ _ _ _]   |
+    [_ _ _ _ _ _ _ _]   |
+            .           |
+            .            > flight mode variables 4*4 = 16 bytes
+     _ _ _ _._ _ _ _    |
+    [_ _ _ _ _ _ _ _]   |
+    [_ _ _ _ _ _ _ _]   |
+    [_ _ _ _ _ _ _ _]   |
+    [_ _ _ _ _ _ _ _]   /
+    
+     _ _ _ _ _ _ _ _
+    [_ _ _ _|_ _ _ _]  \
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+            .          |
+            .           > mix data - 12 mixes - 36 bytes
+     _ _ _ _ _ _ _ _   |
+    [_ _ _ _|_ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  |
+    [_ _ _ _ _ _ _ _]  /
+
+
+total 104 bytes
+
+9 models = 936 bytes
+ bytes remaining
+current model = (0x03ff)
