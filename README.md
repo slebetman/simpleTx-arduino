@@ -4,10 +4,14 @@ Simple RC computer radio
 
 ## Setup
 
-This projects uses arduino-cli. It is possible to build this with
+This projects uses **arduino-cli**. It is possible to build this with
 Arduino IDE but you will not be able to edit most of the source
 files. Use a normal IDE or code editor (VScode, Sublime etc.) and
 use the Makefile provided to build (verify) and upload the program.
+
+Alternatively if you can't use **arduino-cli** (I don't know if Windows users can use it). Use a normal IDE to edit code and use Arduino IDE to build and upload the program.
+
+To install arduino-cli:
 
 1. Download **arduino-cli** from https://github.com/arduino/arduino-cli/releases
 
