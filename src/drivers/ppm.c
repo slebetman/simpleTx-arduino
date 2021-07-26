@@ -11,13 +11,13 @@ void initPPM () {
 	pinMode(BIND, OUTPUT);
 
 	digitalWrite(BIND, HIGH);
-	digitalWrite(TX_POWER, LOW);
+	digitalWrite(TX_POWER, HIGH);
 
 	// initialize timer1
 	noInterrupts();           // disable all interrupts
 	TCCR1A = 0;
 	TCCR1B = 0;
-	TCNT1 = 65536 - SERVO_MIN;
+	TCNT1 = 65536 - (SERVO_MIN/4);
 	TCCR1B |= (1 << CS10);    // 1:1 prescaler
 	TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
 	interrupts();             // enable all interrupts
@@ -32,7 +32,7 @@ void startPPM () {
 void processPPM () {
 	if (currentChannel < 6) {
 		if (ppmState) {
-			TCNT1 = 65536 - SERVO_MAX;
+			TCNT1 = 65536 - SERVO_CENTER;
 			digitalWrite(PPM_OUT, MARK);
 			currentChannel++;
 		}
