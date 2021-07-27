@@ -1,9 +1,10 @@
 #include <Arduino.h>
+#include "ppm.h"
 
 char buffer[20];
 int bufptr = 0;
 
-int x = 0;
+char chan = 0;
 
 char* trimn(char *str, int n) {
 	char *ret = str;
@@ -46,27 +47,52 @@ char processConsole () {
 				Serial.println("hi there!");
 			}
 			else if (strncmp(cmd, "help", 20) == 0) {
-				Serial.println("hello  : say hi to me");
-				Serial.println("val    : get current value");
-				Serial.println("inc    : increment value");
-				Serial.println("dec    : decrement value");
-				Serial.println("help   : print this help");
+				Serial.println("hello     : say hi to me");
+				Serial.println("val       : get current values");
+				Serial.println("chan <x>  : set channel to configure");
+				Serial.println("inc       : increment channel value");
+				Serial.println("dec       : decrement channel value");
+				Serial.println("help      : print this help");
 				Serial.println("");
 			}
+			else if (strncmp(cmd, "chan", 4) == 0) {
+				chan = cmd[5] - '0';
+				if (chan < 0 || chan >= 6) {
+					chan = 0;
+					Serial.print("invalid channel!");
+				}
+				else {
+					Serial.print("selected channel: ");
+					Serial.println((short)chan);
+				}
+			}
 			else if (strncmp(cmd, "inc", 20) == 0) {
-				x++;
-				Serial.println(x);
+				output[chan] += 3200;
+				Serial.println(output[chan]);
 			}
 			else if (strncmp(cmd, "dec", 20) == 0) {
-				x--;
-				Serial.println(x);
+				output[chan] -= 3200;
+				Serial.println(output[chan]);
 			}
 			else if (strncmp(cmd, "val", 20) == 0) {
-				Serial.println(x);
+				for (char i=0;i<6;i++) {
+					if (i>0) Serial.print(", ");
+					Serial.print(chan);
+					Serial.print(":");
+					Serial.print(output[chan]);
+				}
+				Serial.println("");
+			}
+			else if (strlen(cmd) == 0) {
+				// do nothing
 			}
 			else {
 				Serial.print("sorry, unknown command: ");
 				Serial.println(cmd);
+			}
+
+			for (char i=0;i<20;i++) {
+				buffer[i] = 0;
 			}
 
 			bufptr = 0;
