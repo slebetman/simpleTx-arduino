@@ -6,6 +6,13 @@
 #define TX_POWER  3
 #define BIND      4
 
+#define DEBUG_OUT_HIGH    PORTB=PORTB|0x04
+#define DEBUG_OUT_LOW     PORTB=PORTB&0xfb
+#define DEBUG_OUT_TOGGLE  PORTB=PORTB^0x04
+
+#define PPM_OUT_MARK      PORTD=PORTD&0xfb
+#define PPM_OUT_SPACE     PORTD=PORTD|0x04
+
 #define JOYSTICK0 14 /* A0 */
 #define JOYSTICK1 15 /* A1 */
 #define JOYSTICK2 16 /* A2 */

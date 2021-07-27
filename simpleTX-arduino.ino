@@ -3,7 +3,6 @@
 #include "src/drivers/serial-console.h"
 
 int tickTracker = 0;
-int tick = 0;
 
 void setup() {
 	// put your setup code here, to run once:
@@ -20,16 +19,12 @@ void loop() {
 
 	int now = millis();
 
-	if (tickTracker != now) {
-		tick += now-tickTracker;
+	if (now-tickTracker >= 20) {
 		tickTracker = now;
 
-		if (tick >= 20) {
-			tick = 0;
-			startPPM();
-			digitalWrite(DEBUG_OUT, !digitalRead(DEBUG_OUT));
-			return;
-		}
+		startPPM();
+		DEBUG_OUT_TOGGLE;
+		return;
 	}
 
 	if (processConsole()) return;
